@@ -1,0 +1,216 @@
+<!--index.wxml-->
+<view class="container">
+  <view class='box box-pack-between'>
+    <view class='number'>编号：A101</view>
+    <view>
+      <button class='button'> 销售详情 </button>
+    </view>
+  </view>
+
+  <view class='storeInfo'>
+    <view class='inStoreInfo'>
+      <view class='item '>门店名称：　</view>
+      <view>
+        <text>浦东浦东新区浦区浦东浦区浦东新区浦东</text>
+      </view>
+    </view>
+    <view class='inStoreInfo txt'>
+      <view class='item'>负责人：　　</view>
+      <view>
+        <text>浦东浦区浦东</text>
+      </view>
+    </view>
+    <view class='inStoreInfo txt'>
+      <view class='item'>联系方式：　</view>
+      <view bindtap='calling'>
+        <text class='phoneNum'>{{ phoneNum }}</text>
+      </view>
+    </view>
+  </view>
+
+  <!--flex  -->
+  <!-- <view class='table'>
+    <view class='proList box box-pack-between box-align-center '>
+      <view class='item input'>
+        <picker bindchange="bindPickerChange" value="{{index}}" range-key="name" range="{{arr}}">
+          <view class="picker">
+            <text>{{ pickerText }}</text>{{arr[index].name}}
+          </view>
+        </picker>
+      </view>
+      <view class='box item box-align-center'>
+        <input placeholder='请输入' class='input' />
+        <view>*25元/斤</view>
+      </view>
+      <view class='item'>
+        <text>金额：12000元</text>
+      </view>
+    </view>
+
+    <view class='proList box box-pack-between box-align-center '>
+      <view class='item'>
+        <text>十三香料：</text>
+      </view>
+      <view class='box item box-align-center'>
+        <input placeholder='请输入' class='input' />
+        <view>*2元/斤</view>
+      </view>
+      <view class='item'>
+        <text>金额：1元</text>
+      </view>
+    </view>
+
+    <view class='proList box box-pack-between box-align-center '>
+      <view class='item'>
+        <text>麻辣香料：</text>
+      </view>
+      <view class='box item box-align-center'>
+        <input placeholder='请输入' class='input' />
+        <view>*25元/斤</view>
+      </view>
+      <view class='item'>
+        <text>金额：12000元</text>
+      </view>
+    </view>
+
+    <view class='proList box box-pack-between box-align-center '>
+      <view class='item'>
+        <text>蒜泥香料：</text>
+      </view>
+      <view class='box item box-align-center'>
+        <input placeholder='请输入' class='input' />
+        <view>*25元/斤</view>
+      </view>
+      <view class='item'>
+        <text>金额：12000元</text>
+      </view>
+    </view>
+  </view> -->
+
+  <!--float  -->
+  <view class='table'>
+    <view class='inTable'>
+      <view class='clearfix '>
+        <view class='demoitem1 fl'>
+          <view class='item input'>
+            <!-- <input placeholder='请选择' class='input'/>  -->
+            <picker bindchange="bindPickerChange" value="{{index}}" range-key="name" range="{{arr}}">
+              <view class="picker">
+                <text>{{ pickerText }}</text>{{arr[index].name}}
+              </view>
+            </picker>
+          </view>
+        </view>
+        <view class='demoitem2 fl'>
+          <view class='box item box-align-center'>
+            <input placeholder='请输入' class='input' />
+            <view>*25元/斤</view>
+          </view>
+        </view>
+        <view class='demoitem3  fl'>
+          <view class='item'>
+            <text>金额:10元</text>
+          </view>
+        </view>
+      </view>
+
+      <view class='clearfix'>
+        <view class='demoitem1 fl'>
+          <view class='item'>
+            <text>十三香料：</text>
+          </view>
+        </view>
+        <view class='demoitem2 fl'>
+          <view class='box item box-align-center'>
+            <input placeholder='请输入' class='input' />
+            <view>*222元/斤</view>
+          </view>
+        </view>
+        <view class='demoitem3 fl '>
+          <view class='item'>
+            <text>金额:1元</text>
+          </view>
+        </view>
+      </view>
+
+      <view class='clearfix'>
+        <view class='demoitem1 fl'>
+          <view class='item'>
+            <text>麻辣香料：</text>
+          </view>
+        </view>
+        <view class='demoitem2 fl'>
+          <view class='box item box-align-center'>
+            <input placeholder='请输入' class='input' />
+            <view>*222元/斤</view>
+          </view>
+        </view>
+        <view class='demoitem3 fl '>
+          <view class='item'>
+            <text>金额:1元</text>
+          </view>
+        </view>
+      </view>
+
+      <view class='clearfix'>
+        <view class='demoitem1 fl'>
+          <view class='item'>
+            <text>蒜泥香料：</text>
+          </view>
+        </view>
+        <view class='demoitem2 fl'>
+          <view class='box item box-align-center'>
+            <input placeholder='请输入' class='input' />
+            <view>*2226元/斤</view>
+          </view>
+        </view>
+        <view class='demoitem3 fl '>
+          <view class='item'>
+            <text>金额:100元</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class='orderWrap clearfix'>
+      <view class='fl'>
+        <button size='mini' class='orderBtn'>下单</button>
+      </view>
+      <view class='fr'>
+        总金额：
+        <text class='count'>2222</text>元
+      </view>
+    </view>
+  </view>
+
+  <view class='section box box-align-center'>
+    <text class='remark'>下午5点前下订单，次日送达</text>
+    <button size='mini' plain="true" class='disputeBtn'>争议订单</button>
+  </view>
+
+  <view class='box box-pack-between orderWrap'>
+    <view class='number'>门店下单</view>
+  </view>
+
+  <view class='shopWrap'>
+    <view class='infoItem' wx:for="{{orderArr}}" wx:key="key">
+      <view>
+        <view class='box box-pack-between detailInfo'>
+          <view>
+            <text class='txtInfo'>{{ item.date }} {{ item.week }}：{{ item.detail }}</text>
+          </view>
+          <view>
+            <button size='mini' plain='true' class='detailBtn'>详情</button>
+          </view>
+        </view>
+        <view class='evaluate'>
+          <icon type="info"  size="16" />
+          <text class='evaluateCon'>评价：{{ item.evaluate }}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+
+
+
+</view>

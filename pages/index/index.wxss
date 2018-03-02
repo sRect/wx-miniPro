@@ -1,0 +1,140 @@
+/**index.wxss**/
+.container {
+  width: 100%;
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.number {
+  font-weight: bold;
+  border-bottom: 2px solid #3196FF;
+  padding-bottom: 6px;
+}
+.button {
+  width: 88px;
+  height: 30px;
+  font-size: 14px;
+  background: #3196FF;
+  color: #fff;
+  line-height: 30px;
+}
+
+.storeInfo {
+  padding: 30px 0 0 10px;
+}
+.inStoreInfo {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  margin-bottom: 8px;
+}
+.inStoreInfo .item {
+  color: #888;
+  flex-shrink: 0;
+  font-size: 15px;
+}
+.inStoreInfo .phoneNum {
+  color: #3196FF;
+}
+
+.table {
+  width: 100%;
+  border-radius: 4px;
+  background: #F9FBFD;
+  font-size: 14px;
+  padding: 10px;
+  margin-top: 20px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.table .inTable {
+  padding-bottom: 23px;
+  border-bottom: 1px solid #DDE7F1;
+}
+.table .input {
+  width: 70px;
+  height: 30px;
+  border-radius: 4px;
+  border: 1px solid #D3D8E2;
+  padding: 4rpx;
+  background-color: #fff;
+}
+.table picker {
+  height: 100%;
+  line-height: 30px;
+}
+.table .demoitem1,
+.table .demoitem3 {
+  width: 28%;
+  line-height: 36px;
+  white-space:nowrap;
+}
+.table .demoitem3 {
+  padding-left: 10px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.table .demoitem2 {
+  width: 44%;
+  white-space:nowrap;
+}
+.table .clearfix {
+  margin-bottom: 8px;
+}
+
+.orderWrap {
+  padding-top: 15px;
+}
+.orderWrap .orderBtn {
+  background: #FE8523;
+  color: #fff;
+  width: 70px;
+  height: 30px;
+}
+.orderWrap .count {
+  font-size: 18px;
+}
+
+.section{
+  padding-top: 14px;
+  padding-left: 25px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.section .remark {
+  font-size: 14px;
+}
+.section .disputeBtn {
+  border-color: #FE8523;
+  color: #FE8523;
+}
+
+.shopWrap {
+  padding-top: 20px;
+}
+.shopWrap .infoItem {
+  margin-bottom: 18px;
+}
+
+.shopWrap .detailInfo {
+  background-color: #F9FBFD;
+  padding: 10px;
+}
+.shopWrap .txtInfo {
+  font-size: 16px;
+}
+.shopWrap .detailBtn {
+  border: 0;
+  color: #3196FF;
+}
+ .shopWrap .evaluate {
+  margin-top: 8px;
+  line-height: 1;
+} 
+.shopWrap icon {
+  vertical-align: middle;
+}
+.shopWrap .evaluateCon {
+  font-size: 14px;
+}
