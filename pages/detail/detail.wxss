@@ -1,0 +1,69 @@
+.wrap {
+  background-color: #F7F7F7;
+  padding-top: 10px;
+}
+.orderContent {
+  background-color: #fff;
+  padding: 20px 15px;
+  -webjit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.orderContent .orderData {
+  color: #3398FF;
+  font-size: 15px;
+  padding: 10px 12px;
+  background-color: #F9FBFD;
+}
+.orderContent,
+.orderContent .orderDetail,
+.orderContent .inOrderList{
+  width: 100%;
+}
+.orderContent .orderDetail {
+  font-size: 14px;
+}
+.orderContent .orderList {
+  border-bottom: 1px dashed #E3E8F0;
+  padding: 15px 0;
+}
+.orderContent .orderItem1 {
+  width: 168px;
+}
+.orderContent .orderItem2 {
+  width: 114px;
+}
+.orderContent .orderList:last-child{
+  border-bottom : 0;
+}
+.orderContent .refundBtn {
+  color: #FF8522;
+  font-size: 12px;
+  width: 58px;
+  height: 20px;
+  line-height: 20px;
+  padding: 5rpx;
+  border-color: #FF8522;
+  box-sizing: content-box;
+}
+
+.record {
+  padding-top: 10px;
+}
+.record .inRecord {
+  padding: 20px 15px;
+  background: #fff;
+}
+.record .number {
+  font-weight: bold;
+  border-bottom: 2px solid #3196FF;
+  padding-bottom: 6px;
+  margin-bottom: 20px;
+}
+.record .recordList {
+  margin-bottom: 5px;
+}
+.record .recordItem {
+  padding: 10px 15px;
+  background-color: #F9FBFD;
+  font-size: 15px;
+}

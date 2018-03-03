@@ -1,0 +1,41 @@
+<view class='wrap'>
+  <view class='orderContent'>
+    <view class='orderData box box-pack-between'>
+      <view>
+        <text>下单时间：2018-03-01</text>
+      </view>
+      <view>
+        <text>总金额：22999410元</text>
+      </view>
+    </view>
+    <view class='orderDetail'>
+      <view class='orderList' wx:for="{{detailArr}}" wx:key="key">
+        <view class='inOrderList box box-pack-between box-align-center'>
+          <view class='orderItem orderItem1'>
+            <text>{{item.poductType}}：{{item.orderCount}}*{{item.orderPrice}}元/斤</text>
+          </view>
+          <view class='orderItem orderItem2'>
+            <text>金额：{{item.orderCount*item.orderPrice}}元</text>
+          </view>
+          <view class='orderItem'>
+            <button plain='true' class='refundBtn'>申请退款</button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='record'>
+    <view class='inRecord'>
+      <view class='box box-pack-between orderWrap'>
+        <view class='number'>维护记录</view>
+      </view>
+      <view class='recordListWrap'>
+        <view class='recordList' wx:for="{{recordArr}}" wx:key="key">
+          <view class='recordItem'>
+            <text>{{item.creatTime}}：{{item.remark}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -199,7 +199,7 @@
             <text class='txtInfo'>{{ item.date }} {{ item.week }}：{{ item.detail }}</text>
           </view>
           <view>
-            <button size='mini' plain='true' class='detailBtn'>详情</button>
+            <button size='mini' plain='true' class='detailBtn' data-id='{{item.id}}' bindtap='gotoDetail'>详情</button>
           </view>
         </view>
         <view class='evaluate'>

@@ -15,16 +15,19 @@ Page({
       date: '2018/01/01',
       week: '(星期一)',
       detail: '3000元',
+      id:'100',
       evaluate: 'a哎哎哎哎a哎哎哎哎哎哎哎哎哎啊a哎哎哎哎哎哎哎哎哎啊哎哎哎哎哎啊'
     }, {
       date: '2018/01/01',
       week: '(星期三)',
       detail: '3987元',
+      id:'101',
       evaluate: 'a哎哎哎哎a哎哎哎哎哎哎哎哎哎啊a哎哎哎哎哎哎哎哎哎啊哎哎哎哎哎啊'
       }, {
         date: '2018/01/01',
         week: '(星期六)',
         detail: '209斤虾',
+        id: '102',
         evaluate: 'a哎哎哎哎a哎哎哎哎哎哎哎哎哎啊a哎哎哎哎哎哎哎哎哎啊哎哎哎哎哎啊'
       }]
   },
@@ -103,6 +106,15 @@ Page({
     this.setData({
       pickerText: '',
       index: e.detail.value
+    })
+  },
+  gotoDetail: function(e){
+    console.log(e)
+    let id = e.currentTarget.dataset.id;
+    console.log(id)
+
+    wx.navigateTo({
+      url: '../detail/detail',
     })
   }
 })

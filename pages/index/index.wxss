@@ -84,7 +84,7 @@
 }
 
 .orderWrap {
-  padding-top: 15px;
+  padding-top: 25px;
 }
 .orderWrap .orderBtn {
   background: #FE8523;
