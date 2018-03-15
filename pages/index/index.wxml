@@ -1,7 +1,7 @@
 <!--index.wxml-->
 <view class="container">
   <view class='box box-pack-between'>
-    <view class='number'>编号：A101</view>
+    <view class='number'>编号：{{agencyCode}}</view>
     <view>
       <button class='button'> 销售详情 </button>
     </view>
@@ -11,19 +11,19 @@
     <view class='inStoreInfo'>
       <view class='item '>门店名称：　</view>
       <view>
-        <text>浦东浦东新区浦区浦东浦区浦东新区浦东</text>
+        <text>{{agencyName}}</text>
       </view>
     </view>
     <view class='inStoreInfo txt'>
       <view class='item'>负责人：　　</view>
       <view>
-        <text>浦东浦区浦东</text>
+        <text>{{linkName}}</text>
       </view>
     </view>
     <view class='inStoreInfo txt'>
       <view class='item'>联系方式：　</view>
       <view bindtap='calling'>
-        <text class='phoneNum'>{{ phoneNum }}</text>
+        <text class='phoneNum'>{{ telephone }}</text>
       </view>
     </view>
   </view>
@@ -96,6 +96,7 @@
             <!-- <input placeholder='请选择' class='input'/>  -->
             <picker bindchange="bindPickerChange" value="{{index}}" range-key="name" range="{{arr}}">
               <view class="picker">
+                <!-- <text>{{ pickerText }}</text>{{arr[index].name}} -->
                 <text>{{ pickerText }}</text>{{arr[index].name}}
               </view>
             </picker>
@@ -103,13 +104,20 @@
         </view>
         <view class='demoitem2 fl'>
           <view class='box item box-align-center'>
-            <input placeholder='请输入' class='input' />
+            <input type='number' 
+              disabled='{{ selectFlag }}' 
+              placeholder='请输入' 
+              data-type="1" 
+              data-price="25" 
+              bindinput="handleInput"
+              bindtap='handleSelectInput' 
+              class='input' />
             <view>*25元/斤</view>
           </view>
         </view>
         <view class='demoitem3  fl'>
           <view class='item'>
-            <text>金额:10元</text>
+            <text>金额:{{ resultCountArr[0] }}元</text>
           </view>
         </view>
       </view>
@@ -122,13 +130,13 @@
         </view>
         <view class='demoitem2 fl'>
           <view class='box item box-align-center'>
-            <input placeholder='请输入' class='input' />
-            <view>*222元/斤</view>
+            <input type='number' placeholder='请输入' data-type="2" data-price="7" bindinput="handleInput" class='input' />
+            <view>*7元/斤</view>
           </view>
         </view>
         <view class='demoitem3 fl '>
           <view class='item'>
-            <text>金额:1元</text>
+            <text>金额:{{ resultCountArr[1] }}元</text>
           </view>
         </view>
       </view>
@@ -141,13 +149,13 @@
         </view>
         <view class='demoitem2 fl'>
           <view class='box item box-align-center'>
-            <input placeholder='请输入' class='input' />
-            <view>*222元/斤</view>
+            <input type='number' placeholder='请输入' data-type="3" data-price="7" bindinput="handleInput"  class='input' />
+            <view>*7元/斤</view>
           </view>
         </view>
         <view class='demoitem3 fl '>
           <view class='item'>
-            <text>金额:1元</text>
+            <text>金额:{{ resultCountArr[2] }}元</text>
           </view>
         </view>
       </view>
@@ -160,24 +168,24 @@
         </view>
         <view class='demoitem2 fl'>
           <view class='box item box-align-center'>
-            <input placeholder='请输入' class='input' />
-            <view>*2226元/斤</view>
+            <input type='number' placeholder='请输入' data-type="4" data-price="8" bindinput="handleInput"  class='input' />
+            <view>*8元/斤</view>
           </view>
         </view>
         <view class='demoitem3 fl '>
           <view class='item'>
-            <text>金额:100元</text>
+            <text>金额:{{ resultCountArr[3] }}元</text>
           </view>
         </view>
       </view>
     </view>
     <view class='orderWrap clearfix'>
       <view class='fl'>
-        <button size='mini' class='orderBtn'>下单</button>
+        <button size='mini' class='orderBtn' bindtap='handleorder'>下单</button>
       </view>
       <view class='fr'>
         总金额：
-        <text class='count'>2222</text>元
+        <text class='count'>{{ totalCount }}</text>元
       </view>
     </view>
   </view>
@@ -196,21 +204,18 @@
       <view>
         <view class='box box-pack-between detailInfo'>
           <view>
-            <text class='txtInfo'>{{ item.date }} {{ item.week }}：{{ item.detail }}</text>
+            <text class='txtInfo'>{{ item.creatTime }}：{{ item.orderAmount }}元</text>
           </view>
           <view>
-            <button size='mini' plain='true' class='detailBtn' data-id='{{item.id}}' bindtap='gotoDetail'>详情</button>
+            <button size='mini' plain='true' class='detailBtn' data-id='{{item.agencyOrderID}}' bindtap='gotoDetail'>详情</button>
           </view>
         </view>
         <view class='evaluate'>
-          <icon type="info"  size="16" />
-          <text class='evaluateCon'>评价：{{ item.evaluate }}</text>
+          <icon type="info" size="16" />
+          <text class='evaluateCon'>评价：</text>
         </view>
       </view>
     </view>
   </view>
-
-
-
 
 </view>

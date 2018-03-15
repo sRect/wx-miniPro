@@ -1,0 +1,9 @@
+<view>
+  <view>
+    <icon type="success" size="30"/>
+  </view>
+
+  <view>
+    <text>支付结果： {{ payResult }}</text>
+  </view>
+</view>

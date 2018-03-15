@@ -10,6 +10,37 @@ App({
     wx.login({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        // console.log(res)
+        if (res.code) {
+          const self = this;
+          let code = res.code;
+          this.globalData.code = code;
+
+          wx.request({
+            url: 'https://www.jzwms.com/hnMiniApp/GetOpenId',
+            method: 'POST',
+            header: {
+              'content-type': 'application/x-www-form-urlencoded'
+            },
+            data: { 'code': code },
+            success: function (res) {
+              console.log(res)
+              let openId = res.data.openid;
+              self.globalData.openid = openId;
+            },
+            fail: function (err) {
+              console.log(err)
+            }
+          })
+
+        } else {
+          wx.showToast({
+            title: '登录失效',
+            icon: 'none',
+            duration: 2000
+          })
+          console.log('获取用户登录态失败！' + res.errMsg)
+        }
       }
     })
     // 获取用户信息
@@ -34,6 +65,30 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    code: null,
+    openid: null,
+    agencyID: 1,
+  },
+  handleRequest: function (arg, cb) {
+    wx.request({
+      url: arg.url,
+      method: 'POST',
+      data: arg.data,
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      success: function (res) {
+        cb(res);
+      },
+      fail: function (err) {
+        console.log(err)
+        wx.showToast({
+          title: err.errMsg,
+          icon: 'none',
+          duration: 3000
+        })
+      }
+    })
   }
 })

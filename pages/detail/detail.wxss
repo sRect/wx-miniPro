@@ -67,3 +67,6 @@
   background-color: #F9FBFD;
   font-size: 15px;
 }
+.record .isNoRecord {
+  font-size: 14px;
+}
