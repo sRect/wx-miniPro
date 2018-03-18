@@ -181,7 +181,7 @@
     </view>
     <view class='orderWrap clearfix'>
       <view class='fl'>
-        <button size='mini' class='orderBtn' bindtap='handleorder'>下单</button>
+        <button size='mini' class='orderBtn' bindtap='requestOrder'>下单</button>
       </view>
       <view class='fr'>
         总金额：

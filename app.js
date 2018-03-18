@@ -24,7 +24,7 @@ App({
             },
             data: { 'code': code },
             success: function (res) {
-              console.log(res)
+              // console.log(res)
               let openId = res.data.openid;
               self.globalData.openid = openId;
             },
@@ -69,6 +69,12 @@ App({
     code: null,
     openid: null,
     agencyID: 1,
+  },
+  debounce: function (method, context){
+    clearTimeout(method.tId);
+    method.tId = setTimeout(function () {
+      method.call(context);
+    }, 500);
   },
   handleRequest: function (arg, cb) {
     wx.request({

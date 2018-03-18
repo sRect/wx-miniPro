@@ -26,6 +26,7 @@ Page({
    */
   onLoad: function (options) {
     this.getData();
+    this.getGoodsInfo();
     this.getOrderTop();
   },
 
@@ -88,7 +89,7 @@ Page({
       }
     })
   },
-  getData: function () { // 获取门店、商品数据
+  getData: function () { // 获取门店信息
     const self = this;
     let arg = {
       url: 'https://www.jzwms.com/hnMiniApp/agency/agencyDetail',
@@ -110,6 +111,65 @@ Page({
                 linkName: myData.agencyInfo.linkName == null ? "--" : myData.agencyInfo.linkName,
                 telephone: myData.agencyInfo.telephone == null ? "" : myData.agencyInfo.telephone
               })
+              break;
+            case 'failure':
+              wx.showToast({
+                title: result.info,
+                icon: 'none',
+                duration: 2000
+              })
+              break;
+            default:
+              break;
+          }
+
+        } else {
+          wx.showToast({
+            title: '返回数据错误',
+            icon: 'none',
+            duration: 2000
+          })
+          return;
+        }
+      } else {
+        wx.showToast({
+          title: '返回数据错误',
+          icon: 'none',
+          duration: 2000
+        })
+        return;
+      }
+    })
+  },
+  getGoodsInfo: function() { // 获取商品信息
+    const self = this;
+    let arg = {
+      url: 'https://www.jzwms.com/hnMiniApp/agency/materialPrice'
+    }
+
+    app.handleRequest(arg, function(data) {
+      if (JSON.stringify(data) !== "{}") {
+        let result = data.data;
+        if (JSON.stringify(result) !== "{}") {
+          let status = result.status;
+          switch (status) {
+            case 'success':
+              let myData = result.data;
+              console.log(myData)
+
+              if (myData.length) {
+                
+              }else {
+                wx.showToast({
+                  title: '返回商品信息错误',
+                  icon: 'none',
+                  duration: 2000
+                })
+                return;
+              }
+              // self.setData({
+              //   arr:
+              // })
               break;
             case 'failure':
               wx.showToast({
@@ -559,7 +619,9 @@ Page({
       }).catch(err => {
         console.log(err)
       })
-
+  },
+  requestOrder: function() { // 最终发起支付
+    app.debounce(this.handleorder, this);
   },
   gotoDetail: function (e) { // 跳转详情
     let agencyOrderID = e.currentTarget.dataset.id;
