@@ -97,8 +97,6 @@ Page({
                 creatTime: myData.orderInfo2.creatTime,
                 orderAmount: myData.orderInfo2.orderAmount,
                 detailArr: myData.orderInfo,
-                recordArr: myData.orderRemark,
-                isNoRecord: myData.orderRemark.length === 0 ? true : false
               })
               break;
             case 'failure':

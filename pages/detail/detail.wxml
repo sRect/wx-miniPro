@@ -12,7 +12,7 @@
       <view class='orderList' wx:for="{{detailArr}}" wx:key="key">
         <view class='inOrderList box box-pack-between box-align-center'>
           <view class='orderItem orderItem1'>
-            <text>{{ poductTypeArr[item.poductType-1] }}：{{item.orderCount}}*{{item.orderPrice}}元/斤</text>
+            <text>{{ item.materialName }}：{{item.orderCount}}*{{item.orderPrice}}元/斤</text>
           </view>
           <view class='orderItem orderItem2'>
             <text>金额：{{item.orderCount*item.orderPrice}}元</text>
@@ -21,7 +21,7 @@
             <text wx:if="{{ item.isLogistics === 4 || item.isLogistics === 5}}">{{ isLogisticsArr[item.isLogistics - 1] }}</text>
             <button plain='true' 
               wx:if="{{ item.isLogistics !== 4 && item.isLogistics !== 5  }}"
-              data-count='{{ item.orderCount*item.orderPrice }}' 
+              data-count='{{ item.orderAmountSeed }}' 
               data-id='{{ item.agencyOrderDetailID }}' 
               bindtap='handleTuikuan' 
               class='refundBtn'>
@@ -38,7 +38,7 @@
         <view class='number'>维护记录</view>
       </view>
       <view class='recordListWrap'>
-        <view wx:if="{{ isNoRecord }}" class='isNoRecord'> 暂无维护记录 </view>
+        <view wx:if="{{ recordArr }}" class='isNoRecord'> 暂无维护记录 </view>
         <view class='recordList' wx:for="{{recordArr}}" wx:key="key">
           <view class='recordItem'>
             <text>{{item.creatTime}}：{{item.remark}}</text>
