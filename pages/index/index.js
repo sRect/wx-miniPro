@@ -18,8 +18,11 @@ Page({
     pickerText: '请选择:',  // 下拉框初始文字
     selectFlag: true, // 下拉框选择控制
     arr: null, // 下拉框内容
+    selectMaterialid: '', // 下拉框选中时的产品id
     selectPrice: '--', // 下拉框单价
+    selectCount: '', // 下拉框输入数量
     materialArr: null, // 商品种类arr
+    orderList: null, // 下单商品arr
     orderArr: [] // 首页近10日订单
   },
 
@@ -157,7 +160,7 @@ Page({
           switch (status) {
             case 'success':
               let myData = result.data;
-              let selectArr = [], materialArr = [], showArr = [];
+              let selectArr = [], materialArr = [], showArr = [], orderList = [];
               console.log(myData)
 
               if (myData.paterialPriceList.length) {
@@ -166,14 +169,28 @@ Page({
                     selectArr.push(item);
                   }else {
                     materialArr.push(item);
+                    orderList.push({
+                      "poductType": '',
+                      "orderPrice": '',
+                      "orderCount": '',
+                      "orderAmountSeed": ''
+                    })
 
                     item.parentID === 0 ? item.isShow = true : item.isShow = false;
                   }
                 })
 
+                orderList.push({
+                  "poductType": '',
+                  "orderPrice": '',
+                  "orderCount": '',
+                  "orderAmountSeed": ''
+                })
+
                 self.setData({
                   arr: selectArr,
                   materialArr: materialArr,
+                  orderList: orderList,
                   resultCountArr: Array(materialArr.length+1).fill(0)
                 })
               }else {
@@ -280,37 +297,51 @@ Page({
     }
   },
   bindPickerChange: function (e) { // 下拉框选择
-    var index = e.detail.value;
-    var currentId = this.data.arr[index].materialID; // 这个id就是选中项的id
-    var currentPrice = this.data.arr[index].materialPrice; // 下拉框单价
-    console.log('picker发送选择改变，携带值为', currentId)
+    let index = e.detail.value,
+      currentId = this.data.arr[index].materialID, // 这个id就是选中项的id
+      currentPrice = this.data.arr[index].materialPrice, // 下拉框单价
+      up = "resultCountArr[0]",
+      up2 = "orderList[0]"
+    // console.log('picker发送选择改变，携带值为', currentId)
 
     this.setData({
       pickerText: '',
       selectPrice: currentPrice,
-      index: e.detail.value
+      index: e.detail.value,
+      selectMaterialid: currentId,
+      selectCount: '',
+      [up]: 0,
+      [up2]: {
+        "poductType": '',
+        "orderPrice": '',
+        "orderCount": '',
+        "orderAmountSeed": ''
+      }
     })
   },
-  handleInput: function (e) { // 金额计算
+  handleInput: function (e) { // input金额计算
     const self = this;
-    let type = e.currentTarget.dataset.type,
+    let type = e.currentTarget.dataset.type, 
       price = e.currentTarget.dataset.price,
       value = e.detail.value,
       materialID = e.currentTarget.dataset.materialid,
       parentID = e.currentTarget.dataset.parentid,
-      totalcount = 0;
+      typeNum = Number.parseInt(type),
+      totalcount = 0,
+      up4 = "orderList[" + typeNum + "]";
 
-    let up = "resultCountArr[" + Number.parseInt(type) + "]";
-    this.setData({
+    let up = "resultCountArr[" + typeNum + "]";
+    self.setData({
       [up]: value * price
     })
 
-    if(type !== "0") {
+    if(type !== "0") { // 控制子商品显示/隐藏
       self.data.materialArr.forEach(function(item, index) {
         if (item.parentID === materialID) {
           let up2 = "materialArr[" + index + "].isShow",
             num = Number.parseInt(index) + 1,
-            up3 = "resultCountArr[" + num +"]";
+            up3 = "resultCountArr[" + num +"]",
+            up5 = "orderList[" + num + "]";
 
           if(value.length) {
             self.setData({
@@ -319,13 +350,28 @@ Page({
           }else {
             self.setData({
               [up2]: false,
-              [up3]: 0
+              [up3]: 0,
+              [up5]: {
+                "poductType": "",
+                "orderPrice": "",
+                "orderCount": "",
+                "orderAmountSeed": ""
+              }
             })
           }
           
         }
       })
     }
+
+    self.setData({
+      [up4]: {
+        "poductType": materialID,
+        "orderPrice": price,
+        "orderCount": value,
+        "orderAmountSeed": value * price
+      }
+    })
 
     totalcount = this.data.resultCountArr.reduce(function (a, b) {
       return a + b;
@@ -337,21 +383,20 @@ Page({
   },
   getAgencyOrderID: function () { // 获取系统订单
     const self = this;
+    let list = [];
+    self.data.orderList.forEach(function(item, index) {
+      if (item.orderCount) {
+        list.push(item)
+      }
+    })
 
     let arg = {
       url: 'https://www.jzwms.com/hnMiniApp/agency/placeAnOrder',
       data: {
         agencyID: '1',
         // orderAmount: self.data.totalCount,
-        orderAmount: 0.02,
-        list: JSON.stringify([
-          {
-            poductType: '1', // 产品ID 
-            orderPrice: 25, // 单价 
-            orderCount: 1, // 数量 
-            orderAmountSeed: '' // 单类总价
-          }
-        ])
+        orderAmount: 0.05,
+        list: JSON.stringify(list)
       }
     }
 
