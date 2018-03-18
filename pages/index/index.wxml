@@ -94,10 +94,10 @@
         <view class='demoitem1 fl'>
           <view class='item input'>
             <!-- <input placeholder='请选择' class='input'/>  -->
-            <picker bindchange="bindPickerChange" value="{{index}}" range-key="name" range="{{arr}}">
+            <picker bindchange="bindPickerChange" value="{{index}}" range-key="materialName" range="{{arr}}">
               <view class="picker">
                 <!-- <text>{{ pickerText }}</text>{{arr[index].name}} -->
-                <text>{{ pickerText }}</text>{{arr[index].name}}
+                <text>{{ pickerText }}</text>{{arr[index].materialName}}
               </view>
             </picker>
           </view>
@@ -107,12 +107,12 @@
             <input type='number' 
               disabled='{{ selectFlag }}' 
               placeholder='请输入' 
-              data-type="1" 
-              data-price="25" 
+              data-type="0" 
+              data-price="{{ selectPrice }}" 
               bindinput="handleInput"
               bindtap='handleSelectInput' 
               class='input' />
-            <view>*25元/斤</view>
+            <view>*{{ selectPrice }}元/斤</view>
           </view>
         </view>
         <view class='demoitem3  fl'>
@@ -122,26 +122,33 @@
         </view>
       </view>
 
-      <view class='clearfix'>
+      <view class='clearfix' wx:for="{{ materialArr }}" wx:key="key" wx:if="{{ item.isShow }}">
         <view class='demoitem1 fl'>
           <view class='item'>
-            <text>十三香料：</text>
+            <text>{{ item.materialName }}：</text>
           </view>
         </view>
         <view class='demoitem2 fl'>
           <view class='box item box-align-center'>
-            <input type='number' placeholder='请输入' data-type="2" data-price="7" bindinput="handleInput" class='input' />
-            <view>*7元/斤</view>
+            <input type='number' 
+              placeholder='请输入' 
+              data-type="{{ index + 1 }}"
+              data-parentid="{{ item.parentID }}"
+              data-materialid="{{ item.materialID }}" 
+              data-price="{{ item.materialPrice }}" 
+              bindinput="handleInput" 
+              class='input' />
+            <view>*{{ item.materialPrice }}元/斤</view>
           </view>
         </view>
         <view class='demoitem3 fl '>
           <view class='item'>
-            <text>金额:{{ resultCountArr[1] }}元</text>
+            <text>金额:{{ resultCountArr[index+1] }}元</text>
           </view>
         </view>
       </view>
 
-      <view class='clearfix'>
+      <!-- <view class='clearfix'>
         <view class='demoitem1 fl'>
           <view class='item'>
             <text>麻辣香料：</text>
@@ -177,7 +184,7 @@
             <text>金额:{{ resultCountArr[3] }}元</text>
           </view>
         </view>
-      </view>
+      </view> -->
     </view>
     <view class='orderWrap clearfix'>
       <view class='fl'>

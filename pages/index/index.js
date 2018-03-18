@@ -17,7 +17,9 @@ Page({
     totalCount: 0, // 下单总金额
     pickerText: '请选择:',  // 下拉框初始文字
     selectFlag: true, // 下拉框选择控制
-    arr: [{ name: '十三香', id: 100 }, { name: '十三香2', id: 101 }], // 下拉框内容
+    arr: null, // 下拉框内容
+    selectPrice: '--', // 下拉框单价
+    materialArr: null, // 商品种类arr
     orderArr: [] // 首页近10日订单
   },
 
@@ -155,10 +157,25 @@ Page({
           switch (status) {
             case 'success':
               let myData = result.data;
+              let selectArr = [], materialArr = [], showArr = [];
               console.log(myData)
 
-              if (myData.length) {
-                
+              if (myData.paterialPriceList.length) {
+                myData.paterialPriceList.forEach(function(item, index) {
+                  if (Number.parseInt(item.materialType) === 1) {
+                    selectArr.push(item);
+                  }else {
+                    materialArr.push(item);
+
+                    item.parentID === 0 ? item.isShow = true : item.isShow = false;
+                  }
+                })
+
+                self.setData({
+                  arr: selectArr,
+                  materialArr: materialArr,
+                  resultCountArr: Array(materialArr.length+1).fill(0)
+                })
               }else {
                 wx.showToast({
                   title: '返回商品信息错误',
@@ -167,9 +184,7 @@ Page({
                 })
                 return;
               }
-              // self.setData({
-              //   arr:
-              // })
+
               break;
             case 'failure':
               wx.showToast({
@@ -266,52 +281,50 @@ Page({
   },
   bindPickerChange: function (e) { // 下拉框选择
     var index = e.detail.value;
-    var currentId = this.data.arr[index].id; // 这个id就是选中项的id
+    var currentId = this.data.arr[index].materialID; // 这个id就是选中项的id
+    var currentPrice = this.data.arr[index].materialPrice; // 下拉框单价
     console.log('picker发送选择改变，携带值为', currentId)
 
     this.setData({
       pickerText: '',
+      selectPrice: currentPrice,
       index: e.detail.value
     })
   },
   handleInput: function (e) { // 金额计算
-    // console.log(e)
+    const self = this;
     let type = e.currentTarget.dataset.type,
       price = e.currentTarget.dataset.price,
       value = e.detail.value,
+      materialID = e.currentTarget.dataset.materialid,
+      parentID = e.currentTarget.dataset.parentid,
       totalcount = 0;
 
-    switch (type) {
-      case '1':
-        let up = "resultCountArr[" + 0 + "]";
-        this.setData({
-          [up]: value * price
-        })
-        // this.data.resultCountArr.splice(0, 1, value*price);
-        break;
-      case '2':
-        let up1 = "resultCountArr[" + 1 + "]";
-        this.setData({
-          [up1]: value * price
-        })
-        // this.data.resultCountArr.splice(1, 1, value * price);
-        break;
-      case '3':
-        let up2 = "resultCountArr[" + 2 + "]";
-        this.setData({
-          [up2]: value * price
-        })
-        // this.data.resultCountArr.splice(2, 1, value * price);
-        break;
-      case '4':
-        let up3 = "resultCountArr[" + 3 + "]";
-        this.setData({
-          [up3]: value * price
-        })
-        // this.data.resultCountArr.splice(3, 1, value * price);
-        break;
-      default:
-        break;
+    let up = "resultCountArr[" + Number.parseInt(type) + "]";
+    this.setData({
+      [up]: value * price
+    })
+
+    if(type !== "0") {
+      self.data.materialArr.forEach(function(item, index) {
+        if (item.parentID === materialID) {
+          let up2 = "materialArr[" + index + "].isShow",
+            num = Number.parseInt(index) + 1,
+            up3 = "resultCountArr[" + num +"]";
+
+          if(value.length) {
+            self.setData({
+              [up2]: true
+            })
+          }else {
+            self.setData({
+              [up2]: false,
+              [up3]: 0
+            })
+          }
+          
+        }
+      })
     }
 
     totalcount = this.data.resultCountArr.reduce(function (a, b) {
@@ -333,9 +346,10 @@ Page({
         orderAmount: 0.02,
         list: JSON.stringify([
           {
-            poductType: '1',
-            orderPrice: 25,
-            orderCount: 1
+            poductType: '1', // 产品ID 
+            orderPrice: 25, // 单价 
+            orderCount: 1, // 数量 
+            orderAmountSeed: '' // 单类总价
           }
         ])
       }
