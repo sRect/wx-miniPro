@@ -23,7 +23,9 @@ Page({
     selectCount: '', // 下拉框输入数量
     materialArr: null, // 商品种类arr
     orderList: null, // 下单商品arr
-    orderArr: [] // 首页近10日订单
+    orderArr: [], // 首页近10日订单
+    orderFlag: true, // 下单防重复提交
+    selectID: "" // 点击评分的id
   },
 
   /**
@@ -398,8 +400,8 @@ Page({
       url: 'https://www.jzwms.com/hnMiniApp/agency/placeAnOrder',
       data: {
         agencyID: '1',
-        // orderAmount: self.data.totalCount,
-        orderAmount: 0.05,
+        orderAmount: self.data.totalCount,
+        // orderAmount: 0.05,
         list: JSON.stringify(list)
       }
     }
@@ -646,7 +648,7 @@ Page({
             icon: 'success',
             duration: 3000,
             success: function() {
-              self.getOrderTop();
+              
               self.paySuccess();
             }
           })
@@ -661,6 +663,15 @@ Page({
             duration: 3000
           })
         }
+      },
+      "complete": function() {
+        setTimeout(function() {
+          self.getOrderTop();
+        }, 800)
+
+        self.setData({
+          orderFlag: true
+        })
       }
     })
   },
@@ -684,7 +695,15 @@ Page({
       })
   },
   requestOrder: function() { // 最终发起支付
-    app.debounce(this.handleorder, this);
+    const self = this;
+    if (self.data.orderFlag) {
+      self.setData({
+        orderFlag: false
+      })
+
+      app.debounce(this.handleorder, this);
+    }
+    
   },
   gotoDetail: function (e) { // 跳转详情
     let agencyOrderID = e.currentTarget.dataset.id;
@@ -695,7 +714,10 @@ Page({
   },
   requestScore: function(e) { // 发起评分
     let agencyOrderID = e.currentTarget.dataset.agencyorderid;
-    this.rater.handleClick(agencyOrderID)
+    // this.rater.handleClick(agencyOrderID)
     
+    this.setData({
+      selectID: agencyOrderID
+    })
   }
 })

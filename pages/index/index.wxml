@@ -231,8 +231,7 @@
             bindtap="requestScore">
           </rater>
           <text 
-            wx:if="{{ item.orderScore !== 0 }}" 
-            data-id="1"
+            wx:if="{{ item.orderScore !== 0 }}"
             class='hasRate'>{{ tools.getScore(item.orderScore) }}
           </text>
         </view>
