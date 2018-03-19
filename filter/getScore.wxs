@@ -1,0 +1,7 @@
+var getScore = function(rate) {
+  return "★★★★★☆☆☆☆☆".slice(5 - rate, 10 - rate);
+}
+
+module.exports = {
+  getScore: getScore
+}
