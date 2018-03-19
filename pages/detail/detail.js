@@ -12,7 +12,8 @@ Page({
     isLogisticsArr: ["配货", "运输中", "运输完毕", "退款中", "退款完毕"],
     agencyOrderID: null, // 订单id
     detailArr: [], // 订单详情arr
-    recordArr: [] // 维护记录arr
+    recordArr: [], // 维护记录arr
+    tuikuanFlag: true
   },
 
   /**
@@ -141,57 +142,70 @@ Page({
         }
       }
 
-    app.handleRequest(arg, data => {
-      if (JSON.stringify(data) !== "{}") {
-        let result = data.data;
-        if (JSON.stringify(result) !== "{}") {
-          let status = result.status.toLowerCase();
-          switch (status) {
-            case 'success':
-              console.log(result)
-              wx.showToast({
-                title: "退款成功",
-                icon: 'success',
-                duration: 2500,
-                success: function() {
-                  self.getOrderInfo();
-                }
-              })
-              break;
-            case 'failure':
-              wx.showToast({
-                title: "退款失败,请重试",
-                icon: 'none',
-                duration: 3000
-              })
-              break;
-            default:
-              wx.showToast({
-                title: "退款失败,请重试",
-                icon: 'none',
-                duration: 3000
-              })
-              break;
-          }
+    if (self.data.tuikuanFlag) {
+      self.setData({
+        tuikuanFlag: false
+      })
+      app.handleRequest(arg, data => {
+        if (JSON.stringify(data) !== "{}") {
+          let result = data.data;
+          if (JSON.stringify(result) !== "{}") {
+            let status = result.status.toLowerCase();
+            switch (status) {
+              case 'success':
+                console.log(result)
+                wx.showToast({
+                  title: "退款成功",
+                  icon: 'success',
+                  duration: 2500,
+                  success: function () {
+                    self.getOrderInfo();
+                    self.setData({
+                      tuikuanFlag: true
+                    })
+                  }
+                })
+                break;
+              case 'failure':
+                wx.showToast({
+                  title: "退款失败,请重试",
+                  icon: 'none',
+                  duration: 3000
+                })
+                self.setData({
+                  tuikuanFlag: true
+                })
+                break;
+              default:
+                wx.showToast({
+                  title: "退款失败,请重试",
+                  icon: 'none',
+                  duration: 3000
+                })
+                self.setData({
+                  tuikuanFlag: true
+                })
+                break;
+            }
 
+          } else {
+            wx.showToast({
+              title: '返回数据错误',
+              icon: 'none',
+              duration: 2000
+            })
+            return;
+          }
         } else {
           wx.showToast({
             title: '返回数据错误',
-            icon: 'none',
+            icon: 'warn',
             duration: 2000
           })
           return;
         }
-      } else {
-        wx.showToast({
-          title: '返回数据错误',
-          icon: 'warn',
-          duration: 2000
-        })
-        return;
-      }
-    })
-
+      })
+    }
 
   }
 })
