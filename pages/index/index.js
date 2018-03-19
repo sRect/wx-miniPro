@@ -696,5 +696,6 @@ Page({
   requestScore: function(e) { // 发起评分
     let agencyOrderID = e.currentTarget.dataset.agencyorderid;
     this.rater.handleClick(agencyOrderID)
+    
   }
 })

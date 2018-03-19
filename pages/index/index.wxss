@@ -143,3 +143,6 @@
 .shopWrap .evaluateCon {
   font-size: 14px;
 }
+.shopWrap .hasRate {
+  color: #FE8523;
+}

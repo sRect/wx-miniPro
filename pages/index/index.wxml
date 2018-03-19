@@ -1,4 +1,5 @@
 <!--index.wxml-->
+<wxs src="./../../filter/getScore.wxs" module="tools" />
 <view class="container">
   <view class='box box-pack-between'>
     <view class='number'>编号：{{agencyCode}}</view>
@@ -224,11 +225,16 @@
         <view class='evaluate'>
           <icon type="info" size="16" />
           <text class='evaluateCon'>评分：</text>
-          <rater id="rater" 
-            data-agencyorderid="{{ item.agencyOrderID }}" 
+          <rater id="rater"
+            wx:if="{{ item.orderScore === 0 }}" 
+            data-agencyorderid="{{ item.agencyOrderID }}"
             bindtap="requestScore">
           </rater>
-          <text wx:if="{{ item.orderScore !== 0 }}">这是{{item.orderScore}}星</text>
+          <text 
+            wx:if="{{ item.orderScore !== 0 }}" 
+            data-id="1"
+            class='hasRate'>{{ tools.getScore(item.orderScore) }}
+          </text>
         </view>
       </view>
     </view>
