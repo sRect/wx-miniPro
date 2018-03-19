@@ -1,4 +1,4 @@
 .rater {
-  color: #f40;
+  color: #ccc;
   cursor: pointer;
 }

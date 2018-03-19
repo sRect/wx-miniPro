@@ -41,8 +41,18 @@ Component({
                   let status = result.status;
                   switch (status) {
                     case 'success':
-                      let myData = result.data;
-                      console.log(myData)
+                      wx.showToast({
+                        title: '评分成功',
+                        icon: 'success',
+                        duration: 1500,
+                        success: function() {
+                          var pages = getCurrentPages()    //获取加载的页面( 页面栈 )
+                      　　var currentPage = pages[pages.length - 1]  // 获取当前页面
+                      　　var prevPage = pages[pages.length - 2]    //获取上一个页面
+
+                          currentPage.getOrderTop();
+                        }
+                      })
 
                       break;
                     case 'failure':
