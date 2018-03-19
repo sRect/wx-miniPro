@@ -8,10 +8,9 @@ Page({
   data: {
     creatTime: '', // 订单时间
     orderAmount: '', // 	订单总金额
-    poductTypeArr: ["十三香", "蒜泥 ", "麻辣 ", "生虾", "冻虾"],
+    // poductTypeArr: ["十三香", "蒜泥 ", "麻辣 ", "生虾", "冻虾"],
     isLogisticsArr: ["配货", "运输中", "运输完毕", "退款中", "退款完毕"],
     agencyOrderID: null, // 订单id
-    isNoRecord: false,
     detailArr: [], // 订单详情arr
     recordArr: [] // 维护记录arr
   },
@@ -136,8 +135,8 @@ Page({
         url: "https://www.jzwms.com/hnMiniApp/tuikuan",
         data: {
           agencyOrderID: self.data.agencyOrderID,
-          // refund: refund,
-          refund: 0.01,
+          refund: refund,
+          // refund: 0.01,
           agencyOrderDetailID: agencyOrderDetailID
         }
       }
