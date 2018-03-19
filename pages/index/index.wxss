@@ -113,6 +113,9 @@
 .shopWrap {
   padding-top: 20px;
 }
+.shopWrap .noOrder {
+  font-size: 14px;
+}
 .shopWrap .infoItem {
   margin-bottom: 18px;
 }
@@ -131,9 +134,11 @@
  .shopWrap .evaluate {
   margin-top: 8px;
   line-height: 1;
+  display: flex;
+  align-items: center;
 } 
 .shopWrap icon {
-  vertical-align: middle;
+  margin-right: 2px;
 }
 .shopWrap .evaluateCon {
   font-size: 14px;

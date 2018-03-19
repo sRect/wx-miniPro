@@ -1,0 +1,9 @@
+<view class='wrapper'>
+   <view>
+    <text bindtap='getScore'  data-index="1" class='rater'>☆</text>
+    <text bindtap='getScore'  data-index="2" class='rater'>☆</text>
+    <text bindtap='getScore'  data-index="3" class='rater'>☆</text>
+    <text bindtap='getScore'  data-index="4" class='rater'>☆</text>
+    <text bindtap='getScore'  data-index="5" class='rater'>☆</text>
+  </view> 
+</view>

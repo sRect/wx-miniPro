@@ -39,7 +39,8 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    //获得rater组件  
+    this.rater = this.selectComponent("#rater")  
   },
 
   /**
@@ -161,7 +162,6 @@ Page({
             case 'success':
               let myData = result.data;
               let selectArr = [], materialArr = [], showArr = [], orderList = [];
-              console.log(myData)
 
               if (myData.paterialPriceList.length) {
                 myData.paterialPriceList.forEach(function(item, index) {
@@ -249,9 +249,13 @@ Page({
           switch (status) {
             case 'success':
               let myData = result.data;
-              self.setData({
-                orderArr: myData
-              })
+              console.log(myData)
+              if (myData.length) {
+                self.setData({
+                  orderArr: myData
+                })
+              }
+              
               break;
             case 'failure':
               wx.showToast({
@@ -688,5 +692,9 @@ Page({
     wx.navigateTo({
       url: '../detail/detail?agencyOrderID=' + agencyOrderID ,
     })
+  },
+  requestScore: function(e) { // 发起评分
+    let agencyOrderID = e.currentTarget.dataset.agencyorderid;
+    this.rater.handleClick(agencyOrderID)
   }
 })

@@ -210,6 +210,7 @@
   </view>
 
   <view class='shopWrap'>
+    <text wx:if="{{ orderArr.length === 0 }}" class='noOrder'>暂无订单信息</text>
     <view class='infoItem' wx:for="{{orderArr}}" wx:key="key">
       <view>
         <view class='box box-pack-between detailInfo'>
@@ -222,7 +223,12 @@
         </view>
         <view class='evaluate'>
           <icon type="info" size="16" />
-          <text class='evaluateCon'>评价：</text>
+          <text class='evaluateCon'>评分：</text>
+          <rater id="rater" 
+            data-agencyorderid="{{ item.agencyOrderID }}" 
+            bindtap="requestScore">
+          </rater>
+          <text wx:if="{{ item.orderScore !== 0 }}">这是{{item.orderScore}}星</text>
         </view>
       </view>
     </view>
