@@ -411,9 +411,15 @@ Page({
         wx.showToast({
           title: '下单总金额不能为0元',
           icon: 'none',
-          duration: 2500
+          duration: 2500,
+          success:function() {
+            self.setData({
+              orderFlag: true
+            })
+          }
         })
         reject("error:下单总金额不能为0元");
+          
         return;
       }else{
         app.handleRequest(arg, function (data) {
