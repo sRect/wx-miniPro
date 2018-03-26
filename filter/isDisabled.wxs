@@ -1,0 +1,7 @@
+var isDisabled = function (val) {
+  return val === 1 ? true : false;
+}
+
+module.exports = {
+  isDisabled: isDisabled
+}

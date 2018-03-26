@@ -151,6 +151,7 @@ Page({
           let result = data.data;
           if (JSON.stringify(result) !== "{}") {
             let status = result.status.toLowerCase();
+            console.log(status)
             switch (status) {
               case 'success':
                 console.log(result)
@@ -176,9 +177,29 @@ Page({
                   tuikuanFlag: true
                 })
                 break;
+              case 'fail':
+                wx.showToast({
+                  title: result.err_code_des,
+                  icon: 'none',
+                  duration: 3000
+                })
+                self.setData({
+                  tuikuanFlag: true
+                })
+                break;
+              case 'null':
+                wx.showToast({
+                  title: '退款无效',
+                  icon: 'none',
+                  duration: 3000
+                })
+                self.setData({
+                  tuikuanFlag: true
+                })
+                break;
               default:
                 wx.showToast({
-                  title: "退款失败,请重试",
+                  title: "退款操作异常,请重试",
                   icon: 'none',
                   duration: 3000
                 })

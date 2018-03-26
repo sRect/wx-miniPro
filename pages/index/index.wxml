@@ -1,5 +1,8 @@
 <!--index.wxml-->
 <wxs src="./../../filter/getScore.wxs" module="tools" />
+<wxs src="./../../filter/unitPrice.wxs" module="filterPrice" />
+<wxs src="./../../filter/isDisabled.wxs" module="filterDisabled" />
+
 <view class="container">
   <view class='box box-pack-between'>
     <view class='number'>编号：{{agencyCode}}</view>
@@ -109,6 +112,7 @@
               disabled='{{ selectFlag }}' 
               placeholder='请输入'
               value='{{ selectCount }}' 
+              data-index="-1"
               data-type="0" 
               data-price="{{ selectPrice }}" 
               data-materialid="{{ selectMaterialid }}"
@@ -136,13 +140,17 @@
             <input type='number' 
               placeholder='请输入' 
               data-type="{{ index + 1 }}"
+              data-index="{{ index }}"
               data-materialtype="{{ item.materialType }}"
               data-parentid="{{ item.parentID }}"
               data-materialid="{{ item.materialID }}" 
               data-price="{{ item.materialPrice }}" 
-              bindinput="handleInput" 
+              bindinput="handleInput"
+              disabled="{{ filterDisabled.isDisabled(index) }}"
+              value="{{ item.val }}"
               class='input' />
-            <view>*{{ item.materialPrice }}元/斤</view>
+            <view>*{{ item.materialPrice }}</view>
+            <text>{{ filterPrice.unitPrice(item.materialType) }}</text>
           </view>
         </view>
         <view class='demoitem3 fl '>

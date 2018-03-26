@@ -14,6 +14,21 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+//fn 要执行的函数
+//delay 延迟
+//mustDelay  在mustDelay时间内必须执行一次
+const debounce2 = function (method, delay) { 
+  var timer = null;
+  return function () {
+    var context = this, args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      method.apply(context, args);
+    }, delay);
+  }
+}
+
 module.exports = {
-  formatTime: formatTime
+  formatTime: formatTime,
+  debounce2: debounce2
 }

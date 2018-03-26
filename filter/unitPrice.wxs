@@ -1,0 +1,25 @@
+var unitPrice = function (val) {
+
+  var num = parseInt(val);
+
+  switch(num) {
+    case 1:
+      return "元/斤";
+      break;
+    case 2:
+      return "元/份";
+      break;
+    case 3:
+      return "元/斤";
+      break;
+    case 4:
+      return "元/套";
+      break;
+    default:
+      break;
+  }
+}
+
+module.exports = {
+  unitPrice: unitPrice
+}

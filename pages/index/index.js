@@ -1,6 +1,7 @@
 //index.js
 //获取应用实例
 const app = getApp()
+const until = require("../../utils/util.js")
 
 Page({
 
@@ -32,9 +33,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    
+    let agencyID = decodeURIComponent(options.agencyID)
+    app.globalData.agencyID = agencyID;
+
     this.getData();
     this.getGoodsInfo();
-    this.getOrderTop();
   },
 
   /**
@@ -49,7 +53,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.getOrderTop();
   },
 
   /**
@@ -189,6 +193,10 @@ Page({
                   "orderAmountSeed": ''
                 })
 
+                materialArr.forEach(function(item, index) {
+                  item.val = "";
+                })
+
                 self.setData({
                   arr: selectArr,
                   materialArr: materialArr,
@@ -325,20 +333,161 @@ Page({
       }
     })
   },
-  handleInput: function (e) { // input金额计算
+  handleInput: until.debounce2(function (e) { // input金额计算
     const self = this;
     let type = e.currentTarget.dataset.type, 
       price = e.currentTarget.dataset.price,
       value = e.detail.value,
       materialID = e.currentTarget.dataset.materialid,
       parentID = e.currentTarget.dataset.parentid,
-      typeNum = Number.parseInt(type),
+      index = e.currentTarget.dataset.index,
+      typeNum = parseInt(type),
       totalcount = 0,
-      up4 = "orderList[" + typeNum + "]";
+      materialtype = e.currentTarget.dataset.materialtype,
+      up4 = "orderList[" + typeNum + "]",
+      materialtypeTxt = "",
+      up = "resultCountArr[" + typeNum + "]";
 
-    let up = "resultCountArr[" + typeNum + "]";
+    if (materialtype === 4) {
+      materialtypeTxt = "套";
+    } else if (materialtype === 3) {
+      materialtypeTxt = "斤";
+    } else if (materialtype === 2) {
+      materialtypeTxt = "份";
+    } else if (materialtype === 1) {
+      materialtypeTxt = "斤";
+    }else {
+      materialtypeTxt = "斤";
+    }
+
+
+    if (value < 30 || value == "") {
+      console.log("enter1")
+      wx.showToast({
+        title: `不可小于30${materialtypeTxt}`,
+        icon: 'none',
+        duration: 2000,
+        success: function() {
+          if (index === "-1") {
+            let up12 = "resultCountArr[0]",
+              up13 = "orderList[0]";
+            self.setData({
+              [up12]: 0,
+              [up13]: {
+                "poductType": "",
+                "orderPrice": "",
+                "orderCount": "",
+                "orderAmountSeed": ""
+              },
+              selectCount: ''
+            })
+
+            totalcount = self.data.resultCountArr.reduce(function (a, b) {
+              return a + b;
+            })
+
+            self.setData({ // 设置总金额
+              totalCount: totalcount
+            })
+            return;
+          };
+          let up6 = "materialArr[" + index + "].val";
+
+          self.setData({
+            [up6]: '',
+            [up4]: {
+              "poductType": "",
+              "orderPrice": "",
+              "orderCount": "",
+              "orderAmountSeed": ""
+            },
+            [up]: 0
+          })
+
+          // if (!materialArr[0].val) {
+
+          // }
+
+          if (type !== "0") { // 控制子商品显示/隐藏
+            self.data.materialArr.forEach(function (item, index) {
+              if (item.parentID === materialID) {
+
+                let up2 = "materialArr[" + index + "].isShow",
+                  num = Number.parseInt(index) + 1,
+                  up3 = "resultCountArr[" + num + "]",
+                  up5 = "orderList[" + num + "]";
+                
+                if (value.length && item.val) {
+                  self.setData({
+                    [up2]: true
+                  })
+                } else {
+                  self.setData({
+                    [up2]: false,
+                    [up3]: 0,
+                    [up5]: {
+                      "poductType": "",
+                      "orderPrice": "",
+                      "orderCount": "",
+                      "orderAmountSeed": ""
+                    }
+                  })
+                }
+
+                if (!self.data.materialArr[0].val) {
+                  self.setData({
+                    [up2]: false,
+                    [up3]: 0,
+                    [up5]: {
+                      "poductType": "",
+                      "orderPrice": "",
+                      "orderCount": "",
+                      "orderAmountSeed": ""
+                    }
+                  })
+                  
+                }
+
+              }
+            })
+          }
+
+          totalcount = self.data.resultCountArr.reduce(function (a, b) {
+            return a + b;
+          })
+
+          self.setData({ // 设置总金额
+            totalCount: totalcount
+          })
+        }
+      })
+      // return;
+    }else {
+      console.log("enter2")
+      if(index === 0) {
+
+        let up7 = "orderList[2]", 
+          up8 = self.data.materialArr[1].materialID,
+          up9 = self.data.materialArr[1].materialPrice,
+          up10 = "materialArr[1].val",
+          up11 = "resultCountArr[2]";
+  
+        self.setData({
+          [up7]: {
+            "poductType": up8,
+            "orderPrice": up9,
+            "orderCount": (value / 10).toFixed(0),
+            "orderAmountSeed": parseInt((value / 10).toFixed(0)) * up9
+          },
+          [up10]: (value / 10).toFixed(0),
+          [up11]: parseInt((value / 10).toFixed(0)) * up9
+        })
+      }
+    }
+
+    // let up = "resultCountArr[" + typeNum + "]";
     self.setData({
-      [up]: value * price
+      [up]: parseFloat((value * price).toFixed(1))
     })
 
     if(type !== "0") { // 控制子商品显示/隐藏
@@ -386,7 +535,7 @@ Page({
     this.setData({ // 设置总金额
       totalCount: totalcount
     })
-  },
+  }, 1500),
   getAgencyOrderID: function () { // 获取系统订单
     const self = this;
     let list = [];
@@ -401,7 +550,7 @@ Page({
       data: {
         agencyID: '1',
         orderAmount: self.data.totalCount,
-        // orderAmount: 0.05,
+        // orderAmount: 0.03,
         list: JSON.stringify(list)
       }
     }
