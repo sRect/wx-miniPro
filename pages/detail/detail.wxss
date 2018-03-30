@@ -27,10 +27,10 @@
   padding: 15px 0;
 }
 .orderContent .orderItem1 {
-  width: 168px;
+  min-width: 310rpx;
 }
 .orderContent .orderItem2 {
-  width: 114px;
+  min-width: 200rpx;
 }
 .orderContent .orderList:last-child{
   border-bottom : 0;
@@ -44,6 +44,9 @@
   padding: 5rpx;
   border-color: #FF8522;
   box-sizing: content-box;
+}
+.orderContent .inOrderList .orderItem {
+  flex-shrink: 0;
 }
 
 .record {

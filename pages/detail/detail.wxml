@@ -17,7 +17,7 @@
           <view class='orderItem orderItem2'>
             <text>金额：{{item.orderCount*item.orderPrice}}元</text>
           </view>
-          <view class='orderItem'>
+          <view class='orderItem orderItem'>
             <text wx:if="{{ item.isLogistics === 4 || item.isLogistics === 5}}">{{ isLogisticsArr[item.isLogistics - 1] }}</text>
             <button plain='true' 
               wx:if="{{ item.isLogistics !== 4 && item.isLogistics !== 5  }}"
