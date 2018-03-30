@@ -33,12 +33,19 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    
-    let agencyID = decodeURIComponent(options.agencyID)
-    app.globalData.agencyID = agencyID;
+    const self = this;
 
-    this.getData();
-    this.getGoodsInfo();
+    let agencyID = options.agencyID || 1,
+      gencyID = decodeURIComponent(options.agencyID);
+
+    app.globalData.agencyID = gencyID;
+    wx.setStorage({
+      key: "agencyID",
+      data: agencyID,
+      complete: function() {
+        self.getGoodsInfo();
+      }
+    })
   },
 
   /**
@@ -53,7 +60,19 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.getOrderTop();
+    const self = this;
+    wx.getStorage({
+      key: 'agencyID',
+      success: function (res) {
+        console.log(res)
+        app.globalData.agencyID = res.data;
+
+        self.getData();
+        self.getOrderTop();
+        
+      }
+    })
+
   },
 
   /**
@@ -103,6 +122,9 @@ Page({
   },
   getData: function () { // 获取门店信息
     const self = this;
+
+    console.log(app.globalData.agencyID)
+
     let arg = {
       url: 'https://www.jzwms.com/hnMiniApp/agency/agencyDetail',
       data: {
@@ -548,7 +570,7 @@ Page({
     let arg = {
       url: 'https://www.jzwms.com/hnMiniApp/agency/placeAnOrder',
       data: {
-        agencyID: '1',
+        agencyID: app.globalData.agencyID,
         orderAmount: self.data.totalCount,
         // orderAmount: 0.03,
         list: JSON.stringify(list)
@@ -569,6 +591,19 @@ Page({
         })
         reject("error:下单总金额不能为0元");
           
+        return;
+      } else if (!app.globalData.agencyID || app.globalData.agencyID === "undefined") {
+        wx.showToast({
+          title: "门店id丢失，请重新扫码进入",
+          icon: 'none',
+          duration: 2000,
+          success: function() {
+            self.setData({
+              orderFlag: true
+            })
+          }
+        })
+        reject("门店id丢失，请重新扫码进入");
         return;
       }else{
         app.handleRequest(arg, function (data) {
