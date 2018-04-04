@@ -53,7 +53,8 @@ Page({
    */
   onReady: function () {
     //获得rater组件  
-    this.rater = this.selectComponent("#rater")  
+    this.rater = this.selectComponent("#rater");
+    
   },
 
   /**
@@ -274,6 +275,8 @@ Page({
     }
 
     app.handleRequest(arg, data => {
+      wx.hideLoading();
+
       if (JSON.stringify(data) !== "{}") {
         let result = data.data;
         if (JSON.stringify(result) !== "{}") {
@@ -572,7 +575,7 @@ Page({
       data: {
         agencyID: app.globalData.agencyID,
         orderAmount: self.data.totalCount,
-        // orderAmount: 0.03,
+        // orderAmount: 0.04,
         list: JSON.stringify(list)
       }
     }

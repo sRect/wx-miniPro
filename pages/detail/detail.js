@@ -9,7 +9,7 @@ Page({
     creatTime: '', // 订单时间
     orderAmount: '', // 	订单总金额
     // poductTypeArr: ["十三香", "蒜泥 ", "麻辣 ", "生虾", "冻虾"],
-    isLogisticsArr: ["配货", "运输中", "运输完毕", "退款中", "退款完毕"],
+    isLogisticsArr: ["配货", "运输中", "运输完毕","", "退货中", "退货完毕"],
     agencyOrderID: null, // 订单id
     detailArr: [], // 订单详情arr
     recordArr: [], // 维护记录arr
@@ -132,8 +132,10 @@ Page({
     const self = this
     let agencyOrderDetailID = e.currentTarget.dataset.id, // 子订单ID
       refund = e.currentTarget.dataset.count, // 退款金额
+      orderStatus = e.currentTarget.dataset.orderstatus, // 订单状态
+      url = orderStatus === 0 ? "https://www.jzwms.com/hnMiniApp/tuikuan" : "https://www.jzwms.com/hnMiniApp/agency/applicationRefund",
       arg = {
-        url: "https://www.jzwms.com/hnMiniApp/tuikuan",
+        url: url,
         data: {
           agencyOrderID: self.data.agencyOrderID,
           refund: refund,
@@ -156,7 +158,7 @@ Page({
               case 'success':
                 console.log(result)
                 wx.showToast({
-                  title: "退款成功",
+                  title: orderStatus === 0 ? "退款成功" : "申请退货成功",
                   icon: 'success',
                   duration: 2500,
                   success: function () {

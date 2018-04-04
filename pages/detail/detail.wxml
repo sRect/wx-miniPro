@@ -18,14 +18,15 @@
             <text>金额：{{item.orderCount*item.orderPrice}}元</text>
           </view>
           <view class='orderItem orderItem'>
-            <text wx:if="{{ item.isLogistics === 4 || item.isLogistics === 5}}">{{ isLogisticsArr[item.isLogistics - 1] }}</text>
+            <text wx:if="{{ item.orderStatus === 4 || item.orderStatus === 5 || item.orderStatus === 2}}">{{ isLogisticsArr[item.orderStatus] }}</text>
             <button plain='true' 
-              wx:if="{{ item.isLogistics !== 4 && item.isLogistics !== 5  }}"
+              wx:if="{{ item.orderStatus !== 4 && item.orderStatus !== 5 && item.orderStatus !== 2 }}"
               data-count='{{ item.orderAmountSeed }}' 
-              data-id='{{ item.agencyOrderDetailID }}' 
+              data-id='{{ item.agencyOrderDetailID }}'
+              data-orderstatus='{{ item.orderStatus }}' 
               bindtap='handleTuikuan' 
               class='refundBtn'>
-              申请退款
+              {{ item.orderStatus === 0 ? '申请退款' : '申请退货' }}
             </button>
           </view>
         </view>
