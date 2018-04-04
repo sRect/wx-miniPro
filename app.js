@@ -6,6 +6,10 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
 
+    wx.showLoading({
+      mask: true
+    })
+
     // 登录
     wx.login({
       success: res => {
