@@ -34,18 +34,38 @@ Page({
    */
   onLoad: function (options) {
     const self = this;
+    console.log("onload进入")
 
-    let agencyID = options.agencyID || 1,
-      gencyID = decodeURIComponent(options.agencyID);
+    if (options.agencyID) {
+      console.log("从二维码中拿到id")
+      let agencyID = decodeURIComponent(options.agencyID);
+      app.globalData.agencyID = agencyID;
 
-    app.globalData.agencyID = gencyID;
-    wx.setStorage({
-      key: "agencyID",
-      data: agencyID,
-      complete: function() {
-        self.getGoodsInfo();
+      wx.setStorage({
+        key: "agencyID",
+        data: agencyID,
+        complete: function () {  
+          console.log("从二维码中拿到id后成功存入storage")
+        }
+      })
+    }else {
+      console.log("未从二维码中拿到id")
+      // wx.setStorage({
+      //   key: "agencyID",
+      //   data: -1,
+      //   complete: function () {
+      //     console.log("未从二维码中拿到id, 存入了测试门店id为-1")
+      //   }
+      // })
+
+      try {
+        wx.setStorageSync('agencyID', -1)
+        console.log("未从二维码中拿到id, 存入了测试门店id为-1")
+      } catch (e) {
       }
-    })
+    }
+
+    self.getGoodsInfo();
   },
 
   /**
@@ -61,18 +81,144 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    console.log("onshow 进入")
     const self = this;
-    wx.getStorage({
-      key: 'agencyID',
-      success: function (res) {
-        console.log(res)
-        app.globalData.agencyID = res.data;
+    // wx.getStorage({
+    //   key: 'agencyID',
+    //   success: function (res) {
+    //     console.log(res)
+    //     app.globalData.agencyID = res.data;
 
-        self.getData();
-        self.getOrderTop();
-        
-      }
-    })
+    //     self.getData();
+    //     self.getOrderTop();
+    //   }
+    // })
+
+    if (parseInt(app.globalData.agencyID) === -1) {
+      wx.getStorage({
+        key: 'agencyID',
+        success: function (res) {
+          console.log(res)
+
+          if (res.data !== "undefined" && res.data !== "null" && parseInt(res.data) !== -1) {
+            console.log("onShow: 从Storage中获取到agencyID,但id不为1")
+            app.globalData.agencyID = res.data;
+
+            self.getData();
+            self.getOrderTop();
+          } else {
+            wx.showModal({
+              title: '提示',
+              content: '门店id丢失，请重新扫码进入,点击确定扫描门店二维码',
+              success: function (res) {
+                if (res.confirm) {
+                  app.globalData.agencyID = -2;
+                  wx.scanCode({
+                    success: (res) => {
+                      console.log("扫码成功:" + JSON.stringify(res))
+                      let scanCodeAgencyID = res.path.split("=")[1];
+
+                      app.globalData.agencyID = scanCodeAgencyID;
+                      wx.setStorage({
+                        key: "agencyID",
+                        data: scanCodeAgencyID,
+                        success: function () {
+                          self.getData();
+                          self.getOrderTop();
+                        }
+                      })
+
+                      // try {
+                      //   wx.setStorageSync('agencyID', scanCodeAgencyID)
+                      //   self.getData();
+                      //   self.getOrderTop();
+                      // } catch (e) {
+                      //   console.log(e)
+                      // }
+                    },
+                    fail: function () {
+                      wx.showModal({
+                        title: '提示',
+                        content: '已取消扫描二维码,点击确定进入测试门店，取消则退出小程序',
+                        success: function (res) {
+                          if (res.confirm) {
+                            app.globalData.agencyID = 1;
+
+                            wx.setStorage({
+                              key: "agencyID",
+                              data: 1,
+                              complete: function () {
+                              }
+                            })
+
+                            self.getData();
+                            self.getOrderTop();
+                          } else if (res.cancel) {
+                            console.log('用户点击取消')
+                            app.globalData.agencyID = -1;
+                            wx.navigateBack({
+                              delta: 0
+                            })
+                          }
+                        }
+                      })
+                    }
+                  })
+                } else if (res.cancel) {
+                  wx.showModal({
+                    title: '提示',
+                    content: '点击确定进入测试门店，取消则退出小程序',
+                    success: function (res) {
+                      if (res.confirm) {
+                        app.globalData.agencyID = 1;
+
+                        wx.setStorage({
+                          key: "agencyID",
+                          data: 1,
+                          complete: function () {
+                          }
+                        })
+
+                        self.getData();
+                        self.getOrderTop();
+                      } else if (res.cancel) {
+                        console.log('用户点击取消')
+                        wx.navigateBack({
+                          delta: 0
+                        })
+                      }
+                    }
+                  })
+                }
+              }
+            })
+
+          }
+        }
+      })
+    } else if (app.globalData.agencyID === -2) {
+      console.log("扫码后重新进入onshow");
+      
+
+    }else {
+      console.log("跑到这来了")
+      wx.getStorage({
+        key: 'agencyID',
+        success: function (res) {
+          console.log(res)
+
+          if (res.data !== "undefined" && res.data !== "null" && parseInt(res.data) !== -1) {
+            console.log("onShow: 从Storage中获取到agencyID,但id不为1")
+            app.globalData.agencyID = res.data;
+
+            self.getData();
+            self.getOrderTop();
+          }
+        }
+      })
+
+
+    }
 
   },
 

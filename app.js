@@ -68,11 +68,14 @@ App({
       }
     })
   },
+  onShow: function() {
+    wx.hideLoading();
+  },
   globalData: {
     userInfo: null,
     code: null,
     openid: null,
-    agencyID: 1,
+    agencyID: -1,
   },
   debounce: function (method, context){
     clearTimeout(method.tId);
